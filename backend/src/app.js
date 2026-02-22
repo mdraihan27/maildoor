@@ -15,8 +15,7 @@ import { mongoSanitizeMiddleware, xssSanitizeMiddleware } from './middlewares/sa
 import authRoutes from './modules/auth/auth.routes.js';
 import userRoutes from './modules/user/user.routes.js';
 import apiKeyRoutes from './modules/apiKey/apiKey.routes.js';
-import auditRoutes from './modules/audit/audit.routes.js';
-
+import auditRoutes from './modules/audit/audit.routes.js';import emailRoutes from './modules/email/email.routes.js';
 const app = express();
 
 // ─── Trust proxy (for accurate req.ip behind reverse proxy) ─────
@@ -124,6 +123,7 @@ app.use('/api/auth', authLimiter, authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/api-keys', apiKeyRoutes);
 app.use('/api/audit', auditRoutes);
+app.use('/api/email', emailRoutes);
 
 // ─────────────────────────────────────────────────────────────────
 // FALLBACK & ERROR HANDLING

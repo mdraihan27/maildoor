@@ -1,4 +1,4 @@
-import mongoSanitize from 'express-mongo-sanitize';
+import { sanitize as mongoSanitizeFn } from 'express-mongo-sanitize';
 
 /**
  * Input sanitisation middleware.
@@ -9,19 +9,20 @@ import mongoSanitize from 'express-mongo-sanitize';
  *    string values (belt-and-suspenders; Helmet CSP is the real guard).
  *
  * Usage: app.use(sanitize)   (after body-parser, before routes)
+ *
+ * NOTE: express-mongo-sanitize's default middleware reassigns req.query
+ * and req.params which throws in Express 5 (getter-only).  We call its
+ * `.sanitize()` helper directly so values are mutated **in place**.
  */
 
 // ─── Mongo-sanitize (strips $ / . operators) ───────────────────
-export const mongoSanitizeMiddleware = mongoSanitize({
-  replaceWith: '_',
-  allowDots: false,
-  onSanitize: ({ req, key }) => {
-    // Optional: could log sanitisation events
-    // logger.warn('Sanitised input', { key, path: req.originalUrl });
-    void req;
-    void key;
-  },
-});
+export const mongoSanitizeMiddleware = (req, _res, next) => {
+  const opts = { replaceWith: '_', allowDots: false };
+  if (req.body)   mongoSanitizeFn(req.body, opts);
+  if (req.query)  mongoSanitizeFn(req.query, opts);
+  if (req.params) mongoSanitizeFn(req.params, opts);
+  next();
+};
 
 // ─── Null-byte / script-tag stripper ────────────────────────────
 
@@ -65,11 +66,23 @@ const deepSanitize = (obj) => {
 };
 
 /**
+ * Sanitise values of an object's own keys **in place** (no reassignment).
+ * Needed because Express / Node may define req.query and req.params as
+ * getter-only properties that cannot be overwritten with `=`.
+ */
+const sanitizeInPlace = (obj) => {
+  if (!obj || typeof obj !== 'object') return;
+  for (const key of Object.keys(obj)) {
+    obj[key] = deepSanitize(obj[key]);
+  }
+};
+
+/**
  * Express middleware: sanitise body, query, and params.
  */
 export const xssSanitizeMiddleware = (req, _res, next) => {
   if (req.body) req.body = deepSanitize(req.body);
-  if (req.query) req.query = deepSanitize(req.query);
-  if (req.params) req.params = deepSanitize(req.params);
+  sanitizeInPlace(req.query);
+  sanitizeInPlace(req.params);
   next();
 };

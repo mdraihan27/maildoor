@@ -5,8 +5,8 @@
 const steps = [
   {
     number: "01",
-    title: "Connect your Gmail",
-    description: "Sign in with Google. We securely store your credentials so we can send on your behalf.",
+    title: "Sign in & add App Password",
+    description: "Sign in with Google, then add your Gmail App Password. It's encrypted with AES-256-GCM before storage.",
   },
   {
     number: "02",
@@ -16,7 +16,7 @@ const steps = [
   {
     number: "03",
     title: "Send through our API",
-    description: "Your server calls our API. We deliver via Gmail. No SMTP, not blocked by DigitalOcean.",
+    description: "Your server calls our API with the API key. We deliver via Gmail SMTP — no port 25 needed.",
   },
 ];
 
@@ -30,7 +30,7 @@ export default function HowItWorksSection() {
             How it works
           </p>
           <h2 className="text-2xl font-semibold tracking-tight">
-            Skip SMTP in three steps
+            Start sending in three steps
           </h2>
         </div>
 

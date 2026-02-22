@@ -3,7 +3,6 @@ import { UAParser } from 'ua-parser-js';
 import GoogleOAuthService from './google.service.js';
 import UserService from '../user/user.service.js';
 import { signAccessToken, signRefreshToken, verifyToken } from '../../utils/jwt.js';
-import { encrypt } from '../../utils/encryption.js';
 import { UnauthorizedError, BadRequestError } from '../../utils/errors.js';
 import { generateRandomHex } from '../../utils/helpers.js';
 import config from '../../config/index.js';
@@ -49,15 +48,9 @@ class AuthService {
     // 3. Parse request metadata
     const loginMeta = this._extractLoginMeta(req);
 
-    // 4. Encrypt Google refresh token (if returned)
-    const encryptedGoogleRefresh = googleTokens.refresh_token
-      ? encrypt(googleTokens.refresh_token, config.jwt.secret)
-      : null;
-
-    // 5. Upsert user
+    // 4. Upsert user (no refresh token stored anymore — using App Passwords)
     const user = await UserService.findOrCreateFromGoogle(profile, {
       loginMeta,
-      encryptedRefreshToken: encryptedGoogleRefresh,
     });
 
     // 6. Issue internal JWTs
@@ -117,12 +110,10 @@ class AuthService {
   // ─── Logout ─────────────────────────────────────────────────
 
   /**
-   * Clear stored refresh token for the user.
+   * Log the user out (clear cookies on client side).
    * @param {string} userId
    */
   async logout(userId) {
-    await UserService.clearRefreshToken(userId);
-
     AuditService.log({
       actor: userId,
       action: 'AUTH_LOGOUT',

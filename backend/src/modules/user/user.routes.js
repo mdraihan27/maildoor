@@ -23,6 +23,41 @@ router.patch(
   asyncHandler(UserController.updateMe),
 );
 
+// ─── App Password routes ───────────────────────────────────────
+router.put(
+  '/me/app-password',
+  authenticate,
+  validate([
+    body('appPassword')
+      .isString()
+      .withMessage('App Password is required'),
+  ]),
+  asyncHandler(UserController.setAppPassword),
+);
+
+router.delete(
+  '/me/app-password',
+  authenticate,
+  asyncHandler(UserController.removeAppPassword),
+);
+
+router.get(
+  '/me/app-password/status',
+  authenticate,
+  asyncHandler(UserController.appPasswordStatus),
+);
+
+router.post(
+  '/me/app-password/verify',
+  authenticate,
+  validate([
+    body('appPassword')
+      .isString()
+      .withMessage('App Password is required'),
+  ]),
+  asyncHandler(UserController.verifyAppPassword),
+);
+
 // ─── Admin routes ───────────────────────────────────────────────
 router.get(
   '/',

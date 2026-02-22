@@ -120,10 +120,10 @@ const emailLogSchema = new mongoose.Schema(
 
     // ── Provider reference ──────────────────────────────────────
     /**
-     * Gmail / provider message ID returned after successful send.
+     * SMTP message ID returned after successful send.
      * Enables future retrieval, threading, or status tracking.
      */
-    gmailMessageId: {
+    messageId: {
       type: String,
       default: null,
       sparse: true,
@@ -147,7 +147,7 @@ const emailLogSchema = new mongoose.Schema(
 emailLogSchema.index({ userId: 1, status: 1 });
 emailLogSchema.index({ userId: 1, createdAt: -1 });
 emailLogSchema.index({ scheduledAt: 1 }, { sparse: true });
-emailLogSchema.index({ gmailMessageId: 1 }, { unique: true, sparse: true });
+emailLogSchema.index({ messageId: 1 }, { unique: true, sparse: true });
 emailLogSchema.index(
   { createdAt: 1 },
   { expireAfterSeconds: 90 * 24 * 60 * 60 }, // 90-day TTL
@@ -179,12 +179,12 @@ emailLogSchema.methods.decryptBody = function () {
 };
 
 /**
- * Mark the log as SENT with a timestamp and optional provider message ID.
+ * Mark the log as SENT with a timestamp and optional message ID.
  */
-emailLogSchema.methods.markSent = function (gmailMessageId = null) {
+emailLogSchema.methods.markSent = function (messageId = null) {
   this.status = STATUSES.SENT;
   this.sentAt = new Date();
-  if (gmailMessageId) this.gmailMessageId = gmailMessageId;
+  if (messageId) this.messageId = messageId;
   return this.save();
 };
 

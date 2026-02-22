@@ -24,9 +24,9 @@ export default function HeroSection() {
 
       {/* Subheadline */}
       <p className="mt-6 max-w-xl text-base text-muted leading-relaxed animate-fade-in" style={{ animationDelay: "0.1s" }}>
-        DigitalOcean blocks SMTP, so you can&apos;t run mail service with your gmail on your
-        droplet. With MailDoor, you connect your Gmail and send emails through
-        our API instead. We sent that mail using your gmail.
+        DigitalOcean blocks port 25, so you can&apos;t send mail from your
+        droplet. With MailDoor, you add your Gmail App Password and send emails
+        through our API instead — delivered from your Gmail via SMTP on port 587.
       </p>
 
       {/* CTA */}

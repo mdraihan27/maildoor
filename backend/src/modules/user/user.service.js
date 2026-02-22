@@ -1,5 +1,6 @@
 import UserRepository from './user.repository.js';
-import { NotFoundError, ConflictError } from '../../utils/errors.js';
+import User from './user.model.js';
+import { NotFoundError, ConflictError, BadRequestError } from '../../utils/errors.js';
 import { stripUndefined } from '../../utils/helpers.js';
 
 class UserService {
@@ -52,21 +53,14 @@ class UserService {
    *   { googleId, email, name, profilePicture }
    * @param {object} opts
    * @param {{ ip, userAgent, device }} opts.loginMeta
-   * @param {string|null}               opts.encryptedRefreshToken  Already-encrypted Google RT
    */
-  async findOrCreateFromGoogle(profile, { loginMeta = {}, encryptedRefreshToken = null } = {}) {
+  async findOrCreateFromGoogle(profile, { loginMeta = {} } = {}) {
     const doc = await UserRepository.findDocumentByGoogleId(profile.googleId);
 
     if (doc) {
       // ── Update mutable fields ────────────────────────────────
       doc.name = profile.name;
       doc.profilePicture = profile.profilePicture || doc.profilePicture;
-
-      // Store encrypted Google refresh token (pre-encrypted by auth.service)
-      if (encryptedRefreshToken) {
-        doc.encryptedRefreshToken = encryptedRefreshToken;
-        doc.refreshTokenExpiry = new Date(Date.now() + 90 * 24 * 60 * 60 * 1000); // 90 days
-      }
 
       // Record login event
       doc.recordLogin({
@@ -90,10 +84,6 @@ class UserService {
       email: profile.email,
       name: profile.name,
       profilePicture: profile.profilePicture || null,
-      encryptedRefreshToken: encryptedRefreshToken || null,
-      refreshTokenExpiry: encryptedRefreshToken
-        ? new Date(Date.now() + 90 * 24 * 60 * 60 * 1000)
-        : null,
       lastLoginIP: loginMeta.ip || null,
       lastLoginDevice: loginMeta.device || null,
       loginHistory: loginMeta.ip
@@ -102,19 +92,56 @@ class UserService {
     });
   }
 
+  // ─── App Password Management ─────────────────────────────────
+
   /**
-   * Clear refresh token for a user (logout flow).
+   * Save a Gmail App Password for the user (encrypted at rest).
+   * @param {string} userId
+   * @param {string} appPassword  Plaintext 16-char Google App Password
+   */
+  async setAppPassword(userId, appPassword) {
+    // Basic format validation: Google app passwords are 16 chars (no spaces)
+    const cleaned = appPassword.replace(/\s/g, '');
+    if (cleaned.length !== 16) {
+      throw new BadRequestError(
+        'Invalid App Password format. Google App Passwords are 16 characters (letters only, no spaces).',
+      );
+    }
+
+    const doc = await User.findById(userId)
+      .select('+encryptedAppPassword');
+    if (!doc) throw new NotFoundError('User');
+
+    doc.setAppPassword(cleaned);
+    await doc.save();
+
+    return { hasAppPassword: true };
+  }
+
+  /**
+   * Remove the stored App Password for a user.
    * @param {string} userId
    */
-  async clearRefreshToken(userId) {
-    const doc = await UserRepository.findDocumentByGoogleId(null)
-      || await UserRepository.findById(userId);
+  async removeAppPassword(userId) {
+    const doc = await User.findById(userId)
+      .select('+encryptedAppPassword');
+    if (!doc) throw new NotFoundError('User');
 
-    // Use direct update to avoid needing the document instance
-    await UserRepository.updateById(userId, {
-      encryptedRefreshToken: null,
-      refreshTokenExpiry: null,
-    });
+    doc.clearAppPassword();
+    await doc.save();
+
+    return { hasAppPassword: false };
+  }
+
+  /**
+   * Check whether user has an app password configured.
+   * @param {string} userId
+   * @returns {Promise<boolean>}
+   */
+  async hasAppPassword(userId) {
+    const user = await UserRepository.findById(userId);
+    if (!user) throw new NotFoundError('User');
+    return !!user.hasAppPassword;
   }
 }
 

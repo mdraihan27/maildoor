@@ -37,9 +37,9 @@ const features = [
   },
   {
     icon: RefreshCw,
-    title: "Token Rotation",
+    title: "Encrypted Credentials",
     description:
-      "JWTs auto-refresh. Google refresh tokens encrypted at rest with AES-256-GCM.",
+      "JWTs auto-refresh. Your Gmail App Password is encrypted at rest with AES-256-GCM.",
   },
   {
     icon: Users,

@@ -61,17 +61,17 @@ const userSchema = new mongoose.Schema(
       default: STATUSES.ACTIVE,
     },
 
-    // ── Encrypted refresh token ──────────────────────────────────
-    encryptedRefreshToken: {
+    // ── Encrypted Gmail app password ──────────────────────────────
+    encryptedAppPassword: {
       type: String,
       default: null,
       select: false, // never returned by default queries
     },
 
-    refreshTokenExpiry: {
-      type: Date,
-      default: null,
-      select: false,
+    /** Whether the user has configured an app password. */
+    hasAppPassword: {
+      type: Boolean,
+      default: false,
     },
 
     // ── API key references ───────────────────────────────────────
@@ -105,8 +105,7 @@ const userSchema = new mongoose.Schema(
       virtuals: true,
       transform(_doc, ret) {
         delete ret.__v;
-        delete ret.encryptedRefreshToken;
-        delete ret.refreshTokenExpiry;
+        delete ret.encryptedAppPassword;
         delete ret.loginHistory;
         ret.id = ret._id;
         return ret;
@@ -121,20 +120,24 @@ userSchema.index({ googleId: 1 }, { unique: true });
 userSchema.index({ email: 1 }, { unique: true });
 userSchema.index({ status: 1, role: 1 });
 userSchema.index({ 'loginHistory.loginAt': -1 });
-userSchema.index({ refreshTokenExpiry: 1 }, { sparse: true });
+userSchema.index({ hasAppPassword: 1 });
 
-// ─── Pre-save hook: encrypt refresh token ───────────────────────
+// ─── Pre-save hook: encrypt app password ────────────────────────
 userSchema.pre('save', function (next) {
-  if (!this.isModified('encryptedRefreshToken')) return next();
+  if (!this.isModified('encryptedAppPassword')) return next();
 
   // If the field is being cleared, allow null through
-  if (this.encryptedRefreshToken === null) return next();
+  if (this.encryptedAppPassword === null) {
+    this.hasAppPassword = false;
+    return next();
+  }
 
   try {
     // Only encrypt if the value is plaintext (not already encrypted)
-    if (!isEncrypted(this.encryptedRefreshToken)) {
-      this.encryptedRefreshToken = encrypt(this.encryptedRefreshToken, getSecret());
+    if (!isEncrypted(this.encryptedAppPassword)) {
+      this.encryptedAppPassword = encrypt(this.encryptedAppPassword, getSecret());
     }
+    this.hasAppPassword = true;
     next();
   } catch (err) {
     next(err);
@@ -144,37 +147,31 @@ userSchema.pre('save', function (next) {
 // ─── Instance methods ───────────────────────────────────────────
 
 /**
- * Decrypt and return the stored refresh token.
- * Returns null when no token exists or decryption fails.
+ * Decrypt and return the stored app password.
+ * Returns null when no password exists or decryption fails.
  */
-userSchema.methods.getDecryptedRefreshToken = function () {
-  if (!this.encryptedRefreshToken) return null;
+userSchema.methods.getDecryptedAppPassword = function () {
+  if (!this.encryptedAppPassword) return null;
   try {
-    return decrypt(this.encryptedRefreshToken, getSecret());
+    return decrypt(this.encryptedAppPassword, getSecret());
   } catch {
     return null;
   }
 };
 
 /**
- * Set (and encrypt) a new refresh token + expiry.
+ * Set (and encrypt) a new app password.
  * Call `.save()` after this method.
  */
-userSchema.methods.setRefreshToken = function (plainToken, expiresIn = 7 * 24 * 60 * 60 * 1000) {
-  this.encryptedRefreshToken = plainToken;
-  this.refreshTokenExpiry = new Date(Date.now() + expiresIn);
+userSchema.methods.setAppPassword = function (plainPassword) {
+  this.encryptedAppPassword = plainPassword;
+  // hasAppPassword is set in pre-save hook
 };
 
-/** Clear stored refresh token (logout / rotation). */
-userSchema.methods.clearRefreshToken = function () {
-  this.encryptedRefreshToken = null;
-  this.refreshTokenExpiry = null;
-};
-
-/** Check whether the stored refresh token has expired. */
-userSchema.methods.isRefreshTokenExpired = function () {
-  if (!this.refreshTokenExpiry) return true;
-  return this.refreshTokenExpiry < new Date();
+/** Clear stored app password. */
+userSchema.methods.clearAppPassword = function () {
+  this.encryptedAppPassword = null;
+  this.hasAppPassword = false;
 };
 
 /**

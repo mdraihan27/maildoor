@@ -118,6 +118,28 @@ export const users = {
       body: JSON.stringify(body),
     }),
 
+  /** Set or update Gmail App Password */
+  setAppPassword: (appPassword) =>
+    request("/api/users/me/app-password", {
+      method: "PUT",
+      body: JSON.stringify({ appPassword }),
+    }),
+
+  /** Remove Gmail App Password */
+  removeAppPassword: () =>
+    request("/api/users/me/app-password", { method: "DELETE" }),
+
+  /** Check if App Password is configured */
+  appPasswordStatus: () =>
+    request("/api/users/me/app-password/status"),
+
+  /** Verify App Password works */
+  verifyAppPassword: (appPassword) =>
+    request("/api/users/me/app-password/verify", {
+      method: "POST",
+      body: JSON.stringify({ appPassword }),
+    }),
+
   /** List users (admin) */
   list: (params = {}) => {
     const qs = new URLSearchParams(params).toString();

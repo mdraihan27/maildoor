@@ -11,11 +11,11 @@ class UserRepository {
 
   /**
    * Find by ID and include select:false fields.
-   * Used when refresh-token or loginHistory data is needed.
+   * Used when app password or loginHistory data is needed.
    */
   async findByIdWithSecrets(id) {
     return User.findById(id)
-      .select('+encryptedRefreshToken +refreshTokenExpiry +loginHistory')
+      .select('+encryptedAppPassword +loginHistory')
       .lean();
   }
 
@@ -29,11 +29,11 @@ class UserRepository {
 
   /**
    * Find by Google ID and return a full Mongoose document (not lean).
-   * Needed when instance methods (setRefreshToken, recordLogin) are required.
+   * Needed when instance methods (setAppPassword, recordLogin) are required.
    */
   async findDocumentByGoogleId(googleId) {
     return User.findOne({ googleId })
-      .select('+encryptedRefreshToken +refreshTokenExpiry +loginHistory');
+      .select('+encryptedAppPassword +loginHistory');
   }
 
   async create(data) {

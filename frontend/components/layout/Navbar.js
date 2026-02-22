@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, LogOut, Shield, Key, Activity, User } from "lucide-react";
+import { Menu, X, LogOut, Shield, Key, Activity, User, BookOpen } from "lucide-react";
 import Logo from "@/components/ui/Logo";
 import TermsModal from "@/components/ui/TermsModal";
 import { useAuth } from "@/lib/auth-context";
@@ -36,6 +36,9 @@ export default function Navbar() {
               <NavLink href="/dashboard/audit" icon={Shield}>
                 Audit
               </NavLink>
+              <NavLink href="/docs" icon={BookOpen}>
+                Docs
+              </NavLink>
               {isAdmin && (
                 <NavLink href="/dashboard/users" icon={User}>
                   Users
@@ -58,8 +61,9 @@ export default function Navbar() {
             </>
           ) : (
             <>
+              <NavLink href="/docs">Docs</NavLink>
               <NavLink href="/terms">Terms</NavLink>
-                <NavLink href="/privacy">Privacy Policy</NavLink>
+              <NavLink href="/privacy">Privacy Policy</NavLink>
               <button
                 onClick={() => setTermsOpen(true)}
                 className="px-4 py-2 rounded-lg text-sm font-medium bg-[#70012b] text-white hover:bg-[#5d0124] transition-colors cursor-pointer"
@@ -104,6 +108,9 @@ export default function Navbar() {
                 <MobileLink href="/dashboard/audit" onClick={() => setMobileOpen(false)}>
                   Audit Logs
                 </MobileLink>
+                <MobileLink href="/docs" onClick={() => setMobileOpen(false)}>
+                  Docs
+                </MobileLink>
                 {isAdmin && (
                   <MobileLink href="/dashboard/users" onClick={() => setMobileOpen(false)}>
                     Users
@@ -121,12 +128,15 @@ export default function Navbar() {
               </>
             ) : (
               <>
+                <MobileLink href="/docs" onClick={() => setMobileOpen(false)}>
+                  Docs
+                </MobileLink>
                 <MobileLink href="/terms" onClick={() => setMobileOpen(false)}>
                   Terms
                 </MobileLink>
-                  <MobileLink href="/privacy" onClick={() => setMobileOpen(false)}>
-                    Privacy Policy
-                  </MobileLink>
+                <MobileLink href="/privacy" onClick={() => setMobileOpen(false)}>
+                  Privacy Policy
+                </MobileLink>
                 <button
                   onClick={() => {
                     setMobileOpen(false);
