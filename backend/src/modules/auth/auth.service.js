@@ -1,4 +1,4 @@
-import UAParser from 'ua-parser-js';
+import { UAParser } from 'ua-parser-js';
 
 import GoogleOAuthService from './google.service.js';
 import UserService from '../user/user.service.js';
