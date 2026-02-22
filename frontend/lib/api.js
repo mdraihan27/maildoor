@@ -3,7 +3,7 @@
  * Handles token management, automatic refresh, and consistent error handling.
  */
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
 /* ─── Token Storage (client-side only) ────────────────── */
 let accessToken = null;
