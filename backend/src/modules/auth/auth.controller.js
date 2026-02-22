@@ -21,12 +21,13 @@ class AuthController {
     const { url, state } = AuthService.generateAuthUrl();
 
     // Store state in a short-lived httpOnly cookie for CSRF validation
+    // Use path '/' so the cookie is reliably sent on cross-site redirects from Google
     res.cookie('oauth_state', state, {
-      httpOnly: config.cookie.httpOnly,
+      httpOnly: true,
       secure: config.cookie.secure,
-      sameSite: config.cookie.sameSite,
+      sameSite: 'lax',
       maxAge: 10 * 60 * 1000, // 10 min
-      path: config.cookie.path,
+      path: '/',
     });
 
     return res.redirect(url);
@@ -45,8 +46,8 @@ class AuthController {
       throw new BadRequestError('Invalid OAuth state — possible CSRF');
     }
 
-    // Clear one-time state cookie
-    res.clearCookie('oauth_state', { path: '/api/auth' });
+    // Clear one-time state cookie (path must match what was set)
+    res.clearCookie('oauth_state', { path: '/' });
 
     const { accessToken, refreshToken } = await AuthService.handleGoogleCallback(code, req);
 
