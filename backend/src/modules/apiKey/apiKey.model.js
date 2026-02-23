@@ -92,7 +92,7 @@ const apiKeySchema = new mongoose.Schema(
 );
 
 // ─── Indexes ────────────────────────────────────────────────────
-apiKeySchema.index({ hashedKey: 1 }, { unique: true });
+// hashedKey already has `unique: true` on the field — no need to duplicate
 apiKeySchema.index({ user: 1, status: 1 });
 apiKeySchema.index({ expiresAt: 1 }, { sparse: true });
 

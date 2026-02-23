@@ -116,32 +116,27 @@ const userSchema = new mongoose.Schema(
 );
 
 // ─── Indexes ────────────────────────────────────────────────────
-userSchema.index({ googleId: 1 }, { unique: true });
-userSchema.index({ email: 1 }, { unique: true });
+// googleId and email already have `unique: true` on the field — no need to duplicate
 userSchema.index({ status: 1, role: 1 });
 userSchema.index({ 'loginHistory.loginAt': -1 });
 userSchema.index({ hasAppPassword: 1 });
 
 // ─── Pre-save hook: encrypt app password ────────────────────────
-userSchema.pre('save', function (next) {
-  if (!this.isModified('encryptedAppPassword')) return next();
+// Mongoose 9 no longer passes `next` — use async/throw instead
+userSchema.pre('save', function () {
+  if (!this.isModified('encryptedAppPassword')) return;
 
   // If the field is being cleared, allow null through
   if (this.encryptedAppPassword === null) {
     this.hasAppPassword = false;
-    return next();
+    return;
   }
 
-  try {
-    // Only encrypt if the value is plaintext (not already encrypted)
-    if (!isEncrypted(this.encryptedAppPassword)) {
-      this.encryptedAppPassword = encrypt(this.encryptedAppPassword, getSecret());
-    }
-    this.hasAppPassword = true;
-    next();
-  } catch (err) {
-    next(err);
+  // Only encrypt if the value is plaintext (not already encrypted)
+  if (!isEncrypted(this.encryptedAppPassword)) {
+    this.encryptedAppPassword = encrypt(this.encryptedAppPassword, getSecret());
   }
+  this.hasAppPassword = true;
 });
 
 // ─── Instance methods ───────────────────────────────────────────

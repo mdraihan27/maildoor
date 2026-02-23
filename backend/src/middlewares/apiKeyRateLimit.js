@@ -28,6 +28,9 @@ const apiKeyRateLimiter = ({
     keyGenerator: (req) =>
       req.apiKey?._id?.toString() || req.ip,
 
+    // Primary key is the API key ID, not IP — disable IPv6 fallback warning
+    validate: { keyGeneratorIpFallback: false },
+
     message: {
       success: false,
       error: {

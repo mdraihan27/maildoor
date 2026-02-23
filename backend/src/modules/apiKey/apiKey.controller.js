@@ -8,7 +8,7 @@ class ApiKeyController {
    * Returns the plaintext key exactly once in the response body.
    */
   async create(req, res) {
-    const result = await ApiKeyService.create(req.user._id, req.body);
+    const result = await ApiKeyService.create(req.user._id, req.body, req);
     return created(res, {
       _id: result._id,
       name: result.name,
@@ -30,13 +30,13 @@ class ApiKeyController {
 
   /** PATCH /api-keys/:id/revoke */
   async revoke(req, res) {
-    const key = await ApiKeyService.revoke(req.user._id, req.params.id);
+    const key = await ApiKeyService.revoke(req.user._id, req.params.id, req);
     return success(res, key);
   }
 
   /** DELETE /api-keys/:id */
   async remove(req, res) {
-    await ApiKeyService.remove(req.user._id, req.params.id);
+    await ApiKeyService.remove(req.user._id, req.params.id, req);
     return noContent(res);
   }
 }

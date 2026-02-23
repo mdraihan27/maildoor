@@ -8,7 +8,6 @@ import { Shield } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { audit as auditApi } from "@/lib/api";
 import DashboardShell from "@/components/layout/DashboardShell";
-import AuditFilters from "@/components/audit/AuditFilters";
 import AuditRow from "@/components/audit/AuditRow";
 import Spinner from "@/components/ui/Spinner";
 import Pagination from "@/components/ui/Pagination";
@@ -21,7 +20,6 @@ export default function AuditPage() {
   const [meta, setMeta] = useState({});
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({ category: "", outcome: "" });
 
   /** Fetch audit logs */
   const fetchLogs = useCallback(
@@ -29,8 +27,6 @@ export default function AuditPage() {
       setLoading(true);
       try {
         const params = { page: p, limit: 15 };
-        if (filters.category) params.category = filters.category;
-        if (filters.outcome) params.outcome = filters.outcome;
 
         /* Admin sees all logs; regular user sees own */
         const res = isAdmin
@@ -46,7 +42,7 @@ export default function AuditPage() {
         setLoading(false);
       }
     },
-    [isAdmin, filters]
+    [isAdmin]
   );
 
   useEffect(() => {
@@ -62,9 +58,6 @@ export default function AuditPage() {
           : "View your personal audit trail."
       }
     >
-      {/* Filters */}
-      <AuditFilters filters={filters} onChange={setFilters} />
-
       {/* Content */}
       {loading ? (
         <div className="flex justify-center py-16">
@@ -74,7 +67,7 @@ export default function AuditPage() {
         <EmptyState
           icon={Shield}
           title="No audit events"
-          description="No events match the current filters."
+          description="No audit events found."
         />
       ) : (
         <div className="space-y-2">

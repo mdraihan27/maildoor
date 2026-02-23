@@ -65,15 +65,14 @@ class AuthService {
     });
 
     // Fire-and-forget audit
-    AuditService.log({
+    AuditService.logFromRequest({
       actor: user._id,
       action: 'AUTH_GOOGLE_LOGIN',
       resource: 'User',
       resourceId: user._id,
+      outcome: 'SUCCESS',
       meta: { email: user.email, device: loginMeta.device },
-      ip: loginMeta.ip,
-      userAgent: loginMeta.userAgent,
-    }).catch(() => {});
+    }, req).catch(() => {});
 
     return { user, accessToken, refreshToken };
   }
@@ -113,13 +112,14 @@ class AuthService {
    * Log the user out (clear cookies on client side).
    * @param {string} userId
    */
-  async logout(userId) {
-    AuditService.log({
+  async logout(userId, req) {
+    AuditService.logFromRequest({
       actor: userId,
       action: 'AUTH_LOGOUT',
       resource: 'User',
       resourceId: userId,
-    }).catch(() => {});
+      outcome: 'SUCCESS',
+    }, req).catch(() => {});
   }
 
   // ─── Private helpers ────────────────────────────────────────

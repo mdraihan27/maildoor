@@ -86,7 +86,7 @@ const emailLogSchema = new mongoose.Schema(
     scheduledAt: {
       type: Date,
       default: null,
-      index: true,
+      // index defined explicitly below (with sparse option)
     },
 
     sentAt: {
@@ -126,7 +126,7 @@ const emailLogSchema = new mongoose.Schema(
     messageId: {
       type: String,
       default: null,
-      sparse: true,
+      // index defined explicitly below (unique + sparse)
     },
   },
   {
@@ -154,16 +154,12 @@ emailLogSchema.index(
 );
 
 // ─── Pre-save: encrypt body ────────────────────────────────────
-emailLogSchema.pre('save', function (next) {
-  if (!this.isModified('body') || !this.body) return next();
+// Mongoose 9 no longer passes `next` — use async/throw instead
+emailLogSchema.pre('save', function () {
+  if (!this.isModified('body') || !this.body) return;
 
-  try {
-    if (!isEncrypted(this.body)) {
-      this.body = encrypt(this.body, getSecret());
-    }
-    next();
-  } catch (err) {
-    next(err);
+  if (!isEncrypted(this.body)) {
+    this.body = encrypt(this.body, getSecret());
   }
 });
 

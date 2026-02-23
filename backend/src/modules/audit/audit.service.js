@@ -65,6 +65,7 @@ class AuditService {
       const entry = {
         action: opts.action,
         actor: opts.actor || null,
+        category: AuditLog.deriveCategory(opts.action),
         resource: opts.resource || null,
         resourceId: opts.resourceId || null,
         severity: opts.severity || AuditLog.SEVERITIES.INFO,

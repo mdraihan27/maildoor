@@ -51,20 +51,19 @@ class EmailController {
       await emailLog.markSent(result.messageId);
 
       // Fire-and-forget audit
-      AuditService.log({
+      AuditService.logFromRequest({
         actor: userId,
         action: 'EMAIL_SEND_SUCCESS',
         resource: 'EmailLog',
         resourceId: emailLog._id,
+        outcome: 'SUCCESS',
         meta: {
           to,
           subject: subject.substring(0, 100),
           messageId: result.messageId,
           apiKeyId,
         },
-        ip: requestIP,
-        userAgent,
-      }).catch(() => {});
+      }, req).catch(() => {});
 
       return success(res, {
         message: 'Email sent successfully',
@@ -85,11 +84,14 @@ class EmailController {
       await emailLog.markFailed(err.message).catch(() => {});
 
       // Fire-and-forget audit
-      AuditService.log({
+      AuditService.logFromRequest({
         actor: userId,
         action: 'EMAIL_SEND_FAILED',
         resource: 'EmailLog',
         resourceId: emailLog._id,
+        outcome: 'FAILURE',
+        errorMessage: err.message,
+        severity: 'ERROR',
         meta: {
           to,
           subject: subject.substring(0, 100),
@@ -97,9 +99,7 @@ class EmailController {
           errorCode: err.code || 'ERR_UNKNOWN',
           apiKeyId,
         },
-        ip: requestIP,
-        userAgent,
-      }).catch(() => {});
+      }, req).catch(() => {});
 
       logger.error('Email send failed', {
         userId,

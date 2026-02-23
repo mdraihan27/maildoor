@@ -78,7 +78,7 @@ class AuthController {
    */
   async logout(req, res) {
     res.clearCookie('refreshToken', { path: '/api/auth' });
-    await AuthService.logout(req.user._id);
+    await AuthService.logout(req.user._id, req);
     return success(res, { message: 'Logged out successfully' });
   }
 }

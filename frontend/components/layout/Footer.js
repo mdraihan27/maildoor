@@ -8,11 +8,13 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-[#70012b]/10 mt-auto">
+    <footer className="border-t border-border mt-auto">
       <div className="mx-auto max-w-6xl px-6 py-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           {/* Brand */}
-          <Logo size="small" className=""/>
+          <div>
+            <Logo size="small" className=""/>
+          </div>
 
           {/* Links */}
           <div className="flex items-center gap-6 text-xs text-muted">
@@ -26,12 +28,12 @@ export default function Footer() {
               Privacy Policy
             </Link>
             <a
-              href="https://github.com"
+              href="https://raihanhossen.site"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-foreground transition-colors"
             >
-              GitHub
+              Developer's portfolio
             </a>
           </div>
 

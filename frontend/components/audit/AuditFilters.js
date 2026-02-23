@@ -5,7 +5,7 @@
 
 import { cn } from "@/lib/utils";
 
-const categories = ["ALL", "AUTH", "APIKEY", "EMAIL", "USER"];
+const categories = ["ALL", "APIKEY", "EMAIL"];
 const outcomes = ["ALL", "SUCCESS", "FAILURE"];
 
 export default function AuditFilters({ filters, onChange }) {

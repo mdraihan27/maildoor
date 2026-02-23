@@ -119,7 +119,7 @@ export default function DocsPage() {
             <CodeBlock
               title="Request"
               language="bash"
-              code={`curl -X POST https://your-domain.com/api/email/send \\
+              code={`curl -X POST ${process.env.NEXT_PUBLIC_API_URL}/api/email/send \\
   -H "Content-Type: application/json" \\
   -H "x-api-key: your_api_key_here" \\
   -d '{
@@ -153,7 +153,7 @@ export default function DocsPage() {
             <CodeBlock
               title="Request"
               language="bash"
-              code={`curl -X POST https://your-domain.com/api/email/send \\
+              code={`curl -X POST ${process.env.NEXT_PUBLIC_API_URL}/api/email/send \\
   -H "Content-Type: application/json" \\
   -H "x-api-key: your_api_key_here" \\
   -d '{

@@ -43,7 +43,7 @@
 }
 
 body {
-  background: linear-gradient(180deg, #14020b 0%, #1a0510 25%, #0d0208 55%, #000000 100%);
+  background: linear-gradient(180deg, #0e0107 0%, #0c0006 25%, #000000 55%, #000000 100%);
   color: var(--foreground);
   font-family: var(--font-poppins), sans-serif;
   min-height: 100vh;

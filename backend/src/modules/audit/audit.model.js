@@ -181,11 +181,11 @@ const auditLogSchema = new mongoose.Schema(
 );
 
 // ─── Pre-save: auto-derive category ────────────────────────────
-auditLogSchema.pre('save', function (next) {
+// Mongoose 9: no `next` callback — just return/throw
+auditLogSchema.pre('save', function () {
   if (!this.category && this.action) {
     this.category = deriveCategory(this.action);
   }
-  next();
 });
 
 // ─── Indexes ────────────────────────────────────────────────────
@@ -212,6 +212,7 @@ auditLogSchema.index({ requestId: 1 }, { sparse: true });
 auditLogSchema.statics.ACTIONS = ACTIONS;
 auditLogSchema.statics.CATEGORIES = CATEGORIES;
 auditLogSchema.statics.SEVERITIES = SEVERITIES;
+auditLogSchema.statics.deriveCategory = deriveCategory;
 
 const AuditLog = mongoose.model('AuditLog', auditLogSchema);
 

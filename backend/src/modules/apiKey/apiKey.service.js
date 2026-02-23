@@ -28,7 +28,7 @@ class ApiKeyService {
    * @param {{ name: string, expiresAt?: string, allowedIPs?: string[] }} opts
    * @returns {object} Created key record + rawKey (plaintext, shown once)
    */
-  async create(userId, { name, expiresAt = null, allowedIPs = [] }) {
+  async create(userId, { name, expiresAt = null, allowedIPs = [] }, req) {
     // 1. Enforce limit
     const activeCount = await ApiKeyRepository.countActiveByUser(userId);
     if (activeCount >= ApiKey.MAX_KEYS_PER_USER) {
@@ -65,13 +65,14 @@ class ApiKeyService {
     await UserRepository.pushApiKey(userId, record._id);
 
     // 6. Audit
-    AuditService.log({
+    AuditService.logFromRequest({
       actor: userId,
       action: 'APIKEY_CREATED',
       resource: 'ApiKey',
       resourceId: record._id,
+      outcome: 'SUCCESS',
       meta: { name, prefix },
-    }).catch(() => {});
+    }, req).catch(() => {});
 
     logger.info('API key created', { userId, keyId: record._id, name });
 
@@ -90,7 +91,7 @@ class ApiKeyService {
   /**
    * Revoke a key (soft-disable). Ownership validated.
    */
-  async revoke(userId, keyId) {
+  async revoke(userId, keyId, req) {
     const key = await this._findAndAuthorize(userId, keyId);
 
     if (key.status === ApiKey.STATUSES.REVOKED) {
@@ -99,13 +100,14 @@ class ApiKeyService {
 
     const revoked = await ApiKeyRepository.revoke(keyId);
 
-    AuditService.log({
+    AuditService.logFromRequest({
       actor: userId,
       action: 'APIKEY_REVOKED',
       resource: 'ApiKey',
       resourceId: keyId,
+      outcome: 'SUCCESS',
       meta: { name: key.name },
-    }).catch(() => {});
+    }, req).catch(() => {});
 
     logger.info('API key revoked', { userId, keyId });
     return revoked;
@@ -116,7 +118,7 @@ class ApiKeyService {
   /**
    * Permanently delete a key and remove its ref from User.apiKeys.
    */
-  async remove(userId, keyId) {
+  async remove(userId, keyId, req) {
     await this._findAndAuthorize(userId, keyId);
 
     await Promise.all([
@@ -124,12 +126,13 @@ class ApiKeyService {
       UserRepository.pullApiKey(userId, keyId),
     ]);
 
-    AuditService.log({
+    AuditService.logFromRequest({
       actor: userId,
       action: 'APIKEY_DELETED',
       resource: 'ApiKey',
       resourceId: keyId,
-    }).catch(() => {});
+      outcome: 'SUCCESS',
+    }, req).catch(() => {});
 
     logger.info('API key deleted', { userId, keyId });
   }
