@@ -80,7 +80,7 @@ export default function CreateKeyModal({ open, onClose, onCreated }) {
 
           {/* Key display */}
           <div className="relative">
-            <code className="block w-full rounded-lg bg-[#130007]/60 border border-[#70012b]/20 p-3 text-xs text-foreground break-all font-mono leading-relaxed">
+            <code className="block w-full rounded-lg bg-[#130007]/60 border border-[#70012b]/20 p-3 text-xs text-foreground break-all font-mono leading-relaxed pe-12">
               {createdKey}
             </code>
             <button
