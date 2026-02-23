@@ -19,7 +19,7 @@ class AuditController {
     if (actor) filter.actor = actor;
     if (category) filter.category = category;
     if (ip) filter.ip = ip;
-    if (outcome) filter.outcome = outcome;
+    if (outcome) filter.outcome = outcome; 
 
     const { docs, total } = await AuditService.list(filter, pagination);
     return paginated(res, docs, pagination.page, pagination.limit, total);

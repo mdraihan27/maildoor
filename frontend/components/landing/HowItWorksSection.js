@@ -6,7 +6,7 @@ const steps = [
   {
     number: "01",
     title: "Sign in & add App Password",
-    description: "Sign in with Google, then add your Gmail App Password. It's encrypted with AES-256-GCM before storage.",
+    description: "Sign in with Google, then add your Gmail App Password. It's encrypted with AES-256-GCM before storing.",
   },
   {
     number: "02",
@@ -16,7 +16,7 @@ const steps = [
   {
     number: "03",
     title: "Send through our API",
-    description: "Your server calls our API with the API key. We deliver via Gmail SMTP — no port 25 needed.",
+    description: "Your server calls our API with the API key. We deliver via Gmail SMTP.",
   },
 ];
 
