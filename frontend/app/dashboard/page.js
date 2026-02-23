@@ -4,7 +4,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Key, Shield, Activity } from "lucide-react";
+import { Key, ScrollText, Activity } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { apiKeys as apiKeysApi, audit as auditApi } from "@/lib/api";
 import DashboardShell from "@/components/layout/DashboardShell";
@@ -64,8 +64,8 @@ export default function DashboardPage() {
           subtitle="Active keys in your account"
         />
         <StatsCard
-          icon={Shield}
-          label="Audit Events"
+          icon={ScrollText}
+          label="Log Events"
           value={stats?.totalLogs ?? 0}
           subtitle="Last 90 days"
         />

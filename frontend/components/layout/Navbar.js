@@ -6,7 +6,16 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, LogOut, Shield, Key, Activity, User, BookOpen } from "lucide-react";
+import {
+  Menu,
+  X,
+  LogOut,
+  ScrollText,
+  Key,
+  Activity,
+  User,
+  BookOpen,
+} from "lucide-react";
 import Logo from "@/components/ui/Logo";
 import TermsModal from "@/components/ui/TermsModal";
 import { useAuth } from "@/lib/auth-context";
@@ -33,8 +42,8 @@ export default function Navbar() {
               <NavLink href="/dashboard/api-keys" icon={Key}>
                 API Keys
               </NavLink>
-              <NavLink href="/dashboard/audit" icon={Shield}>
-                Audit
+              <NavLink href="/dashboard/audit" icon={ScrollText}>
+                Logs
               </NavLink>
               <NavLink href="/docs" icon={BookOpen}>
                 Docs
@@ -106,7 +115,7 @@ export default function Navbar() {
                   API Keys
                 </MobileLink>
                 <MobileLink href="/dashboard/audit" onClick={() => setMobileOpen(false)}>
-                  Audit Logs
+                  Site-wide Logs
                 </MobileLink>
                 <MobileLink href="/docs" onClick={() => setMobileOpen(false)}>
                   Docs

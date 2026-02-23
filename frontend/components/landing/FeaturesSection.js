@@ -25,7 +25,7 @@ const features = [
   },
   {
     icon: Activity,
-    title: "Audit Logging",
+    title: "Activity Logs",
     description:
       "Every action is tracked — logins, key usage, emails sent, role changes, all with 90-day retention.",
   },

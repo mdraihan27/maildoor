@@ -18,7 +18,7 @@ const sections = [
   },
   {
     title: "4. No Liability for Email Content",
-    content: `MailDoor acts exclusively as a technical relay. We do not read, store (beyond encrypted audit logs), endorse, or verify the content of any email sent through the Service. The user who initiates an email is the sole author and sender. Any claims, disputes, legal actions, or damages arising from emails sent through the Service are the exclusive responsibility of the user who sent them. MailDoor and its creators shall not be named as a party in, or held liable for, any such matter.`,
+    content: `MailDoor acts exclusively as a technical relay. We do not read, store (beyond encrypted activity logs), endorse, or verify the content of any email sent through the Service. The user who initiates an email is the sole author and sender. Any claims, disputes, legal actions, or damages arising from emails sent through the Service are the exclusive responsibility of the user who sent them. MailDoor and its creators shall not be named as a party in, or held liable for, any such matter.`,
   },
   {
     title: "5. Account Registration",
@@ -38,7 +38,7 @@ const sections = [
   },
   {
     title: "9. Data Handling",
-    content: `Google credentials are encrypted at rest using AES-256-GCM. Audit logs are retained for 90 days and automatically deleted. We do not sell or share your data with third parties. Login metadata (IP, user agent, device) is collected for security purposes.`,
+    content: `Google credentials are encrypted at rest using AES-256-GCM. Activity logs are retained for 90 days and automatically deleted. We do not sell or share your data with third parties. Login metadata (IP, user agent, device) is collected for security purposes.`,
   },
   {
     title: "10. Disclaimer of Warranties",

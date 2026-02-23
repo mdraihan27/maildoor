@@ -189,7 +189,7 @@ export const apiKeys = {
     request(`/api/api-keys/${id}`, { method: "DELETE" }),
 };
 
-/* ─── Audit Logs ──────────────────────────────────────── */
+/* ─── Logs (Audit) ────────────────────────────────────── */
 export const audit = {
   /** Get current user's audit logs */
   me: (params = {}) => {

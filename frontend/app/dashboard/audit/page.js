@@ -1,10 +1,10 @@
 /**
- * Audit Logs Page — View personal or all (admin) audit events.
+ * Logs Page — View personal or all (admin) log events.
  */
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { Shield } from "lucide-react";
+import { ScrollText } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { audit as auditApi } from "@/lib/api";
 import DashboardShell from "@/components/layout/DashboardShell";
@@ -21,7 +21,7 @@ export default function AuditPage() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
 
-  /** Fetch audit logs */
+  /** Fetch logs */
   const fetchLogs = useCallback(
     async (p = 1) => {
       setLoading(true);
@@ -37,7 +37,7 @@ export default function AuditPage() {
         setMeta(res.meta || {});
         setPage(p);
       } catch {
-        toast.error("Failed to load audit logs");
+        toast.error("Failed to load logs");
       } finally {
         setLoading(false);
       }
@@ -51,11 +51,11 @@ export default function AuditPage() {
 
   return (
     <DashboardShell
-      title="Audit Logs"
+      title="Your Logs"
       description={
         isAdmin
-          ? "View all system audit events across users."
-          : "View your personal audit trail."
+          ? "View site-wide logs across all users."
+          : "View your personal logs."
       }
     >
       {/* Content */}
@@ -65,9 +65,9 @@ export default function AuditPage() {
         </div>
       ) : logs.length === 0 ? (
         <EmptyState
-          icon={Shield}
-          title="No audit events"
-          description="No audit events found."
+          icon={ScrollText}
+          title="No log events"
+          description="No log events found."
         />
       ) : (
         <div className="space-y-2">

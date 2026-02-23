@@ -1,5 +1,5 @@
 /**
- * RecentActivity — Shows recent audit log entries in the dashboard.
+ * RecentActivity — Shows recent log entries in the dashboard.
  */
 import { formatDate } from "@/lib/utils";
 import Badge from "@/components/ui/Badge";

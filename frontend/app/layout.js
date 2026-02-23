@@ -12,7 +12,7 @@ const poppins = Poppins({
 export const metadata = {
   title: "MailDoor — Secure Email Gateway",
   description:
-    "Send emails through Gmail API with secure API key management, audit trails, and role-based access control.",
+    "Send emails through Gmail API with secure API key management, activity logs, and role-based access control.",
 };
 
 export default function RootLayout({ children }) {
