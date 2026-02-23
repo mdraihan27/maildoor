@@ -56,7 +56,7 @@ export default function DashboardPage() {
       description="Here's an overview of your MailDoor account."
     >
       {/* Stats row */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
         <StatsCard
           icon={Key}
           label="API Keys"
@@ -78,15 +78,15 @@ export default function DashboardPage() {
       </div>
 
       {/* Two-column layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
         {/* Profile (1/3 width) */}
         <div>
           <ProfileCard user={user} />
         </div>
 
         {/* Recent activity (2/3 width) */}
-        <div className="lg:col-span-2">
-          <div className="rounded-xl border border-[#70012b]/10 bg-[#130007]/20 p-6">
+        <div className="md:col-span-2">
+          <div className="rounded-xl border border-[#70012b]/10 bg-[#130007]/20 p-4 sm:p-6">
             <h2 className="text-sm font-semibold uppercase tracking-wider text-muted mb-4">
               Recent Activity
             </h2>

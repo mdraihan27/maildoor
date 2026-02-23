@@ -51,10 +51,10 @@ const features = [
 
 export default function FeaturesSection() {
   return (
-    <section className="px-6 py-20">
+    <section className="px-4 sm:px-6 py-12 sm:py-20">
       <div className="mx-auto max-w-5xl">
         {/* Section header */}
-        <div className="text-center mb-14">
+        <div className="text-center mb-8 sm:mb-14">
           <p className="text-xs uppercase tracking-widest text-[#70012b] font-medium mb-3">
             Features
           </p>
@@ -64,7 +64,7 @@ export default function FeaturesSection() {
         </div>
 
         {/* Feature grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {features.map((f) => (
             <FeatureCard key={f.title} {...f} />
           ))}

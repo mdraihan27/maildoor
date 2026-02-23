@@ -144,7 +144,7 @@ export default function ApiKeysPage() {
       description="Configure your Gmail App Password and manage API keys for sending emails."
     >
       {/* ─── App Password Section ─────────────────────────────── */}
-      <div className="mb-8 rounded-xl border border-[#70012b]/10 bg-[#130007]/20 p-6">
+      <div className="mb-6 sm:mb-8 rounded-xl border border-[#70012b]/10 bg-[#130007]/20 p-4 sm:p-6">
         <div className="flex items-center gap-3 mb-4">
           <div className="inline-flex rounded-lg bg-[#70012b]/10 p-2">
             <Lock size={18} className="text-[#70012b]" />
@@ -201,7 +201,7 @@ export default function ApiKeysPage() {
                 </button>
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <Button
                   onClick={handleVerifyAppPassword}
                   size="sm"
@@ -270,7 +270,7 @@ export default function ApiKeysPage() {
       </div>
 
       {/* ─── API Keys Section ─────────────────────────────────── */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 gap-3">
         <h2 className="text-base font-semibold">API Keys</h2>
         <Button onClick={() => setModalOpen(true)} size="sm">
           <Plus size={14} />

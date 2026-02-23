@@ -22,10 +22,10 @@ const steps = [
 
 export default function HowItWorksSection() {
   return (
-    <section className="px-6 py-20 border-t border-[#70012b]/5">
+    <section className="px-4 sm:px-6 py-12 sm:py-20 border-t border-[#70012b]/5">
       <div className="mx-auto max-w-4xl">
         {/* Section header */}
-        <div className="text-center mb-14">
+        <div className="text-center mb-8 sm:mb-14">
           <p className="text-xs uppercase tracking-widest text-[#70012b] font-medium mb-3">
             How it works
           </p>

@@ -13,7 +13,7 @@ export default function HeroSection() {
   const [termsOpen, setTermsOpen] = useState(false);
 
   return (
-    <section className="relative flex flex-col items-center justify-center px-6 pt-36 pb-24 text-center">
+    <section className="relative flex flex-col items-center justify-center px-4 sm:px-6 pt-20 sm:pt-28 md:pt-36 pb-16 md:pb-24 text-center">
       {/* Headline */}
       <h1 className="max-w-3xl text-4xl md:text-6xl font-bold tracking-tight leading-tight animate-fade-in">
         Gmail service for servers that{" "}
@@ -30,7 +30,7 @@ export default function HeroSection() {
       </p>
 
       {/* CTA */}
-      <div className="mt-10 flex items-center gap-4 animate-fade-in" style={{ animationDelay: "0.2s" }}>
+      <div className="mt-8 sm:mt-10 flex items-center gap-4 animate-fade-in" style={{ animationDelay: "0.2s" }}>
         {isAuthenticated ? (
           <a
             href="/dashboard"

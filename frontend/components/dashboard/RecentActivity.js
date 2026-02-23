@@ -18,15 +18,15 @@ export default function RecentActivity({ logs = [] }) {
       {logs.map((log) => (
         <div
           key={log._id}
-          className="flex items-center justify-between gap-4 rounded-lg border border-[#70012b]/5 bg-[#130007]/15 px-4 py-3"
+          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 rounded-lg border border-[#70012b]/5 bg-[#130007]/15 px-3 sm:px-4 py-3"
         >
-          <div className="flex items-center gap-3 min-w-0">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <Badge color={log.category}>{log.category}</Badge>
             <span className="text-sm text-foreground truncate">
               {formatAction(log.action)}
             </span>
           </div>
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 sm:shrink-0">
             {log.outcome && (
               <Badge color={log.outcome}>{log.outcome}</Badge>
             )}

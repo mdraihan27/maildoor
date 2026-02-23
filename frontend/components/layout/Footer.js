@@ -9,7 +9,7 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-border mt-auto">
-      <div className="mx-auto max-w-6xl px-6 py-8">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-6 sm:py-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           {/* Brand */}
           <div>
@@ -17,7 +17,7 @@ export default function Footer() {
           </div>
 
           {/* Links */}
-          <div className="flex items-center gap-6 text-xs text-muted">
+          <div className="flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-6 gap-y-2 text-xs text-muted">
             <Link href="/docs" className="hover:text-foreground transition-colors">
               Docs
             </Link>

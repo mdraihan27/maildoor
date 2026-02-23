@@ -17,7 +17,7 @@ export default function KeyRow({ apiKey, onRevoke, onDelete }) {
   const displayStatus = isExpired && isActive ? "EXPIRED" : apiKey.status;
 
   return (
-    <div className="flex items-center justify-between gap-4 rounded-lg border border-[#70012b]/8 bg-[#130007]/15 px-4 py-3.5 transition-colors hover:bg-[#130007]/25">
+    <div className="flex items-center justify-between gap-3 sm:gap-4 rounded-lg border border-[#70012b]/8 bg-[#130007]/15 px-3 sm:px-4 py-3 sm:py-3.5 transition-colors hover:bg-[#130007]/25">
       {/* Left: Name + masked key */}
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2 mb-1">

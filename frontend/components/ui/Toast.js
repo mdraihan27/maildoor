@@ -53,7 +53,7 @@ export function ToastProvider({ children }) {
       {children}
 
       {/* Toast container */}
-      <div className="fixed bottom-6 right-6 z-[999] flex flex-col gap-2 pointer-events-none">
+      <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 z-[999] flex flex-col gap-2 pointer-events-none">
         {toasts.map((t) => {
           const Icon = icons[t.type];
           return (

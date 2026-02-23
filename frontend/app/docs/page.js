@@ -22,7 +22,7 @@ export default function DocsPage() {
       title="API Documentation"
       description="Learn how to send emails through MailDoor using simple HTTP requests."
     >
-      <div className="mx-auto max-w-3xl space-y-10 pb-20">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 space-y-8 sm:space-y-10 pb-12 sm:pb-20">
         {/* Quick Start */}
         <Section icon={BookOpen} title="Quick Start">
           <p className="text-sm text-muted leading-relaxed mb-4">

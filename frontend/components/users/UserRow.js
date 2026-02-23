@@ -21,7 +21,7 @@ export default function UserRow({
   const isSelf = user._id === currentUserId;
 
   return (
-    <div className="flex items-center justify-between gap-4 rounded-lg border border-[#70012b]/8 bg-[#130007]/15 px-4 py-3.5 transition-colors hover:bg-[#130007]/25">
+    <div className="flex items-center justify-between gap-3 sm:gap-4 rounded-lg border border-[#70012b]/8 bg-[#130007]/15 px-3 sm:px-4 py-3 sm:py-3.5 transition-colors hover:bg-[#130007]/25">
       {/* Left: Avatar + info */}
       <div className="flex items-center gap-3 min-w-0">
         {user.profilePicture ? (
@@ -39,7 +39,7 @@ export default function UserRow({
         )}
 
         <div className="min-w-0">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
             <span className="text-sm font-medium truncate">{user.name}</span>
             <Badge color={user.role}>{user.role}</Badge>
             <Badge color={user.status}>{user.status}</Badge>

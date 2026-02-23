@@ -12,9 +12,9 @@ export const metadata = {
 export default function TermsPage() {
   return (
     <PageShell>
-      <div className="mx-auto max-w-3xl px-6 py-12">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 py-8 sm:py-12">
         {/* Header */}
-        <div className="mb-12 text-center">
+        <div className="mb-8 sm:mb-12 text-center">
           <p className="text-xs uppercase tracking-widest text-[#70012b] font-medium mb-3">
             Legal
           </p>

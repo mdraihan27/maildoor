@@ -11,8 +11,8 @@ export default function ProfileCard({ user }) {
   if (!user) return null;
 
   return (
-    <div className="rounded-xl border border-[#70012b]/10 bg-[#130007]/20 p-6">
-      <div className="flex items-center gap-4">
+    <div className="rounded-xl border border-[#70012b]/10 bg-[#130007]/20 p-4 sm:p-6">
+      <div className="flex items-center gap-3 sm:gap-4">
         {/* Avatar */}
         {user.profilePicture ? (
           <Image
