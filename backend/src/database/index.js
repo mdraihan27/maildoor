@@ -1,1 +1,1 @@
-export { default as connectDatabase, disconnectDatabase } from './connection.js';
+export { default as connectDatabase, disconnectDatabase, ensureDbConnected } from './connection.js';

@@ -10,6 +10,7 @@ import config from './config/index.js';
 import logger from './utils/logger.js';
 import { errorHandler, requestId } from './middlewares/index.js';
 import { mongoSanitizeMiddleware, xssSanitizeMiddleware } from './middlewares/sanitize.js';
+import { ensureDbConnected } from './database/index.js';
 
 // ─── Route imports ──────────────────────────────────────────────
 import authRoutes from './modules/auth/auth.routes.js';
@@ -101,6 +102,11 @@ app.use(
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', uptime: process.uptime(), timestamp: new Date().toISOString() });
 });
+
+// ─────────────────────────────────────────────────────────────────
+// DATABASE (serverless-safe: connect on first request)
+// ─────────────────────────────────────────────────────────────────
+app.use(ensureDbConnected);
 
 // ─────────────────────────────────────────────────────────────────
 // AUTH RATE LIMITER (scoped to auth endpoints only)
